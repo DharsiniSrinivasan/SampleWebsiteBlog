@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Personal Blog</title>
+  <style>
+    :root {
+      --primary: #6a4fa5;
+      --secondary: #4a1660;
+      --accent: #4fc3f7;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray: #6c757d;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: var(--secondary);
+    }
+
+    .hero {
+      padding: 100px 20px;
+      text-align: center;
+      background: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+      color: white;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .hero .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #f1f1f1;
+      max-width: 700px;
+      margin: 0 auto 30px;
+    }
+
+    .blog-container {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+      padding: 40px 0;
+    }
+
+    .editor-container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+      padding: 30px;
+      margin-bottom: 40px;
+    }
+
+    .editor-title {
+      width: 100%;
+      padding: 15px;
+      font-size: 1.5rem;
+      border: none;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 20px;
+      outline: none;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 15px;
+    }
+
+    .tool-btn {
+      background: none;
+      border: 1px solid #ddd;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 14px;
+    }
+
+    .tool-btn:hover {
+      background-color: #f0f0f0;
+      border-color: #ccc;
+    }
+
+    .editor {
+      min-height: 300px;
+      padding: 15px;
+      border: 1px solid #eee;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .recent-posts {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+      padding: 30px;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      color: var(--secondary);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 10px;
+    }
+
+    .post {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .post:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .post h3 {
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .post-meta {
+      display: flex;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-bottom: 10px;
+    }
+
+    .post-excerpt {
+      font-size: 0.95rem;
+      color: var(--dark);
+    }
+
+    .featured-post {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+
+    .featured-image {
+      height: 250px;
+      background-color: #f5f5f5;
+      overflow: hidden;
+    }
+
+    .featured-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .featured-content {
+      padding: 30px;
+    }
+
+    .featured-content h2 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+
+    .read-more {
+      display: inline-block;
+      margin-top: 15px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .read-more:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      background-color: var(--dark);
+      color: white;
+      padding: 40px 0;
+      text-align: center;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    .copyright {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    @media (max-width: 768px) {
+      .blog-container {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+    }
+
+    .editor h1, .editor h2, .editor h3 {
+      margin: 20px 0 15px;
+      color: var(--secondary);
+    }
+
+    .editor p {
+      margin-bottom: 15px;
+    }
+
+    .editor ul, .editor ol {
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    .editor blockquote {
+      border-left: 4px solid var(--accent);
+      padding-left: 15px;
+      margin-left: 0;
+      color: var(--gray);
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="#" class="logo">My Personal Blog</a>
+        <div class="nav-links">
+          <a href="#">Home</a>
+          <a href="#">My Posts</a>
+          <a href="#">Drafts</a>
+          <a href="#">Profile</a>
+        </div>
+        <button class="btn">Sign Out</button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Welcome to My Blog</h1>
+      <p>A place to share my thoughts and experiences.</p>
+      <button class="btn">Start Writing</button>
+    </div>
+  </section>
+
+  <main class="container blog-container">
+    <div class="editor-container">
+      <input type="text" class="editor-title" placeholder="Title your post..." />
+      <div class="toolbar">
+        <button class="tool-btn" onclick="formatText('bold')"><b>B</b></button>
+        <button class="tool-btn" onclick="formatText('italic')"><i>I</i></button>
+        <button class="tool-btn" onclick="formatText('underline')"><u>U</u></button>
+        <button class="tool-btn" onclick="formatText('heading1')">H1</button>
+        <button class="tool-btn" onclick="formatText('heading2')">H2</button>
+        <button class="tool-btn" onclick="formatText('heading3')">H3</button>
+        <button class="tool-btn" onclick="formatText('insertUnorderedList')">• List</button>
+        <button class="tool-btn" onclick="formatText('insertOrderedList')">1. List</button>
+        <button class="tool-btn" onclick="formatText('createLink')">Link</button>
+        <button class="tool-btn" onclick="formatText('insertImage')">Image</button>
+      </div>
+      <div class="editor" contenteditable="true"></div>
+      <div style="margin-top: 20px; display: flex; gap: 10px;">
+        <button class="btn">Save Draft</button>
+        <button class="btn" style="background-color: var(--secondary);">Publish</button>
+      </div>
+    </div>
+
+    <aside class="sidebar">
+      <div class="featured-post">
+        <div class="featured-image">
+          <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80" alt="Journaling Image" />
+        </div>
+        <div class="featured-content">
+          <h2>The Art of Journaling</h2>
+          <p>Discover how the simple practice of journaling can transform your writing and self-reflection...</p>
+          <a href="#" class="read-more">Read more →</a>
+        </div>
+      </div>
+
+      <div class="recent-posts">
+        <h3 class="section-title">Recent Posts</h3>
+        <div class="post">
+          <div class="post-meta">
+            <span>May 15, 2023</span>
+            <span>•</span>
+            <span>5 min read</span>
+          </div>
+          <h3>Finding Your Writing Voice</h3>
+          <p class="post-excerpt">Every writer has a unique voice waiting to be discovered. Here's how to find yours...</p>
+        </div>
+        <div class="post">
+          <div class="post-meta">
+            <span>May 10, 2023</span>
+            <span>•</span>
+            <span>3 min read</span>
+          </div>
+          <h3>Overcoming Writer's Block</h3>
+          <p class="post-excerpt">Practical techniques to get unstuck when the words just won't come...</p>
+        </div>
+        <div class="post">
+          <div class="post-meta">
+            <span>May 5, 2023</span>
+            <span>•</span>
+            <span>7 min read</span>
+          </div>
+          <h3>The Morning Writing Routine</h3>
+          <p class="post-excerpt">How establishing a morning writing habit can double your creative output...</p>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="container footer-content">
+      <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+        <a href="#">Help</a>
+      </div>
+      <p class="copyright">© 2023 My Personal Blog. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    function formatText(command, value = null) {
+      const editor = document.querySelector('.editor');
+      if (!editor.contains(document.activeElement)) editor.focus();
+
+      try {
+        if (command === 'createLink') {
+          const url = prompt('Enter the URL:');
+          if (url) document.execCommand('createLink', false, url);
+        } else if (command === 'insertImage') {
+          const url = prompt('Enter the image URL:');
+          if (url) {
+            const alt = prompt('Enter image description (alt text):');
+            const img = document.createElement('img');
+            img.src = url;
+            if (alt) img.alt = alt;
+            const selection = window.getSelection();
+            if (selection.rangeCount) {
+              const range = selection.getRangeAt(0);
+              range.insertNode(img);
+            }
+          }
+        } else {
+          document.execCommand(command, false, value);
+        }
+      } catch (e) {
+        console.error('Error executing command:', e);
+      }
+      editor.focus();
+    }
+
+    let saveTimeout;
+    const editor = document.querySelector('.editor');
+    const titleInput = document.querySelector('.editor-title');
+
+    function autoSave() {
+      clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(() => {
+        const postContent = {
+          title: titleInput.value,
+          content: editor.innerHTML,
+          lastSaved: new Date().toISOString()
+        };
+        console.log('Auto-saving...', postContent);
+        localStorage.setItem('draftPost', JSON.stringify(postContent));
+      }, 2000);
+    }
+
+    titleInput.addEventListener('input', autoSave);
+    editor.addEventListener('input', autoSave);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const draft = localStorage.getItem('draftPost');
+      if (draft) {
+        const { title, content } = JSON.parse(draft);
+        titleInput.value = title;
+        editor.innerHTML = content;
+      }
+    });
+
+    function toggleMenu() {
+      const nav = document.querySelector('.nav-links');
+      nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    if (window.innerWidth <= 768) {
+      document.querySelector('.logo').addEventListener('click', toggleMenu);
+    }
+  </script>
+</body>
+</html>
